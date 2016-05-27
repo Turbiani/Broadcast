@@ -1,6 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="turbiani.android.dominando.broadcast">
+    <!--
+        Para que uma app possa invocar algum de nossos receivers ela deverá colocar a linha abaixo no seu manisfest
+        <uses-permission android:name="dominando.android.SENHOR_DO_UNIVERSO"/>
+
+        E acioná-lo da seguinte forma
+        Intent it = new Intent();
+        it.setAction("turbiani.android.dominando.broadcast.MINHA_ACAO");
+        it.addCategory(Intent.CATEGORY_DEFAULT);
+        sendBroadcast(it);
+     -->
+    <permission android:name="dominando.android.SENHOR_DO_UNIVERSO"/>
+
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
         android:allowBackup="true"
@@ -17,10 +31,21 @@
             </intent-filter>
         </activity>
 
-        <receiver android:name=".MeuReceiver">
+        <receiver android:name=".MeuReceiver"
+            android:permission="dominando.android.SENHOR_DO_UNIVERSO">
+            <!--
+                Caso queira deixar o receiver privado basta adicionar o atributo abaixo
+                android:exported="false"
+                Agora se eu quiser que uma app minha ou de empresa parceira acesse, irei adicionar
+                o atributo permission,e a tag permission dentro de <manifest>
+            -->
+
             <intent-filter>
                 <action android:name="turbiani.android.dominando.broadcast.MINHA_ACAO" />
                 <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
             </intent-filter>
         </receiver>
     </application>
